@@ -1,3 +1,4 @@
+<%# index.ejs %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,14 +8,67 @@
   <body>
     <% if (locals.user) {%>
     <h1>WELCOME BACK <%= user.username %></h1>
+    <% if (!user.membership) {%>
+    <form action="/activate-membership" method="post">
+      <label for="activate">Insert Super Secret Code</label>
+      <input type="text" id="activate" name="activate" />
+      <label for="user_id"></label>
+      <input type="hidden" name="user_id" id="user_id" value="<%= user.id %>" />
+      <button type="submit">Send Code!</button>
+    </form>
+    <% } %>
+    <form action="/message-post" method="post">
+      <label for="title">Title</label>
+      <input type="text" name="title" id="title" />
+      <label for="texto">Text</label>
+      <input type="text" name="texto" id="texto" />
+
+      <label for="user_id"></label>
+      <input type="hidden" name="user_id" id="user_id" value="<%= user.id %>" />
+      <label for="username"></label>
+      <input
+        type="hidden"
+        name="username"
+        id="username"
+        value="<%= user.username %>"
+      />
+
+      <button type="submit">post</button>
+    </form>
+    <div>
+      <% messages.forEach(message => { %>
+      <div>
+        <p><%= message.title %></p>
+        <p><%= message.texto %></p>
+        <% if (user.membership) {%>
+        <p><%= message.username %></p>
+        <% } %> <% if (user.is_admin) {%>
+        <form action="/delete" method="post">
+          <label for="id"></label>
+          <input type="hidden" name="id" id="id" value="<%= message.id %>" />
+          <button type="submit">DELETE</button>
+        </form>
+        <% } %>
+      </div>
+      <% }) %>
+    </div>
     <a href="/log-out">LOG OUT</a>
     <% } else { %>
     <h1>please log in</h1>
     <form action="/log-in" method="POST">
-      <label for="username">Username</label>
-      <input id="username" name="username" placeholder="username" type="text" />
+      <label for="email">Email</label>
+      <input id="email" name="email" placeholder="email" type="email" />
       <label for="password">Password</label>
-      <input id="password" name="password" type="password" />
+      <input
+        type="password"
+        id="password"
+        name="password"
+        minlength="8"
+        maxlength="20"
+        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$"
+        title="La contraseña debe tener entre 8 y 20 caracteres, incluir al menos una minúscula, una mayúscula, un número y un carácter especial."
+        required
+      />
       <button type="submit">Log In</button>
     </form>
     <%}%>

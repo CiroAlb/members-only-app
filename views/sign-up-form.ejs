@@ -1,3 +1,4 @@
+<%# sign-up-form.ejs %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,9 +9,30 @@
     <h1>Sign Up</h1>
     <form action="/sign-up" method="POST">
       <label for="username">Username</label>
-      <input id="username" name="username" placeholder="username" type="text" />
+      <input
+        id="username"
+        name="username"
+        placeholder="username"
+        type="text"
+        required
+      />
       <label for="password">Password</label>
-      <input id="password" name="password" type="password" />
+      <input
+        type="password"
+        id="password"
+        name="password"
+        minlength="8"
+        maxlength="20"
+        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$"
+        title="La contraseña debe tener entre 8 y 20 caracteres, incluir al menos una minúscula, una mayúscula, un número y un carácter especial."
+        required
+      />
+      <label for="first_name"> First Name </label>
+      <input id="first_name" name="first_name" type="text" required />
+      <label for="last_name"> last Name </label>
+      <input id="last_name" name="last_name" type="text" required />
+      <label for="email"> email </label>
+      <input id="email" name="email" type="email" required />
       <button type="submit">Sign Up</button>
     </form>
   </body>
